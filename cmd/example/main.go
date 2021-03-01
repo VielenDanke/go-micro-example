@@ -1,31 +1,32 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 
-	jsoncodec "github.com/unistack-org/micro-codec-json/v3"
-	httpsrv "github.com/unistack-org/micro-server-http/v3"
-	"github.com/unistack-org/micro/v3"
-	"github.com/unistack-org/micro/v3/server"
-	"github.com/vielendanke/go-micro-example/internal/example/handler"
-	pb "github.com/vielendanke/go-micro-example/proto"
+	"github.com/unistack-org/micro/v3/logger"
+	apiserver "github.com/vielendanke/go-micro-example/internal/example/server"
 )
 
 func main() {
-	srv := micro.Server(httpsrv.NewServer(
-		server.Address(":5050"),
-		server.Codec("application/json", jsoncodec.NewCodec()),
-	))
+	ctx, cancel := context.WithCancel(context.Background())
 
-	svc := micro.NewService(srv)
+	defer cancel()
 
-	svc.Init()
+	errCh := make(chan error, 1)
 
-	h := handler.NewMessageHandler()
+	logger.DefaultLogger = logger.NewLogger(logger.WithLevel(logger.TraceLevel))
 
-	pb.RegisterPostServer(svc.Server(), h)
+	go apiserver.StartExampleService(ctx, errCh)
 
-	if err := svc.Run(); err != nil {
-		fmt.Println(err)
-	}
+	go func() {
+		ch := make(chan os.Signal, 1)
+		signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
+		errCh <- fmt.Errorf("%s", <-ch)
+	}()
+
+	logger.Infof(ctx, "Service terminated %v", <-errCh)
 }
