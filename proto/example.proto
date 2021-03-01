@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package gomicroexample;
+
+option go_package = "proto;pb";
+
+import "api/annotations.proto";
+import "openapiv2/annotations.proto";
+
+service Post {
+    rpc FindByID(FindByIDRequest) returns (FindByIDResponse) {
+        option (micro.api.http) = {
+            get: "/api/v1/posts/{post_id}";
+        };
+    };
+    rpc GetPostFileByID(GetPostFileRequest) returns (stream GetPostFileResponse) {
+        option (micro.api.http) = {
+            get: "/api/v1/posts/{post_id}/file"
+        };
+    };
+};
+
+message GetPostFileRequest {
+    string post_id = 1;
+}
+
+message GetPostFileResponse {
+    bytes data = 1;
+}
+
+message FindByIDRequest {
+    string post_id = 1;
+}
+
+message FindByIDResponse {
+    string post_id = 1;
+    string text = 2;
+}
