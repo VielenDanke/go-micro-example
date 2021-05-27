@@ -3,6 +3,7 @@ package example
 import (
 	"context"
 	"database/sql"
+	"embed"
 
 	hcli "github.com/unistack-org/micro-client-http/v3"
 	jsoncodec "github.com/unistack-org/micro-codec-json/v3"
@@ -37,7 +38,7 @@ func initDB(name, url string) (*sql.DB, error) {
 	return db, nil
 }
 
-func StartExampleService(ctx context.Context, errCh chan<- error) {
+func StartExampleService(ctx context.Context, _ embed.FS, errCh chan<- error) {
 	cfg := configs.NewConfig()
 
 	if loadErr := config.Load(ctx,
