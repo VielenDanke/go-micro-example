@@ -18,12 +18,13 @@
   "paths": {
     "/api/v1/posts/{postId}": {
       "get": {
-        "operationId": "Post_FindByID",
+        "description": "Find user by ID",
+        "operationId": "FindByID",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "User found",
             "schema": {
-              "$ref": "#/definitions/gomicroexampleFindByIDResponse"
+              "$ref": "#/definitions/exampleFindByIDResponse"
             }
           }
         },
@@ -37,6 +38,9 @@
         ],
         "tags": [
           "Post"
+        ],
+        "produces": [
+          "application/json"
         ]
       }
     },
@@ -50,13 +54,13 @@
               "type": "object",
               "properties": {
                 "result": {
-                  "$ref": "#/definitions/gomicroexampleGetPostFileResponse"
+                  "$ref": "#/definitions/exampleGetPostFileResponse"
                 },
                 "error": {
                   "$ref": "#/definitions/rpcStatus"
                 }
               },
-              "title": "Stream result of gomicroexampleGetPostFileResponse"
+              "title": "Stream result of exampleGetPostFileResponse"
             }
           }
         },
@@ -75,7 +79,7 @@
     }
   },
   "definitions": {
-    "gomicroexampleFindByIDResponse": {
+    "exampleFindByIDResponse": {
       "type": "object",
       "properties": {
         "postId": {
@@ -86,7 +90,7 @@
         }
       }
     },
-    "gomicroexampleGetPostFileResponse": {
+    "exampleGetPostFileResponse": {
       "type": "object",
       "properties": {
         "data": {

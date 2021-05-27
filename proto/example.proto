@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package example;
 
-option go_package = "proto;pb";
+option go_package = "/proto;pb";
 
 import "api/annotations.proto";
 import "openapiv2/annotations.proto";
@@ -11,6 +11,23 @@ service Post {
     rpc FindByID(FindByIDRequest) returns (FindByIDResponse) {
         option (micro.api.http) = {
             get: "/api/v1/posts/{post_id}";
+        };
+        option (micro.openapiv2.openapiv2_operation) = {
+            operation_id: "FindByID"
+            consumes: "application/json"
+            produces: "application/json"
+            description: "Find user by ID"
+            responses: {
+                key: "200"
+                value: {
+                    description: "User found"
+                    schema: {
+                        json_schema: {
+                            ref: ".example.FindByIDResponse"
+                        }
+                    }
+                }
+            }
         };
     };
     rpc GetPostFileByID(GetPostFileRequest) returns (stream GetPostFileResponse) {

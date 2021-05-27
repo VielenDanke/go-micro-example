@@ -4,10 +4,11 @@ package pb
 
 import (
 	context "context"
-	_ "github.com/unistack-org/micro-client-http/v3"
+	v3 "github.com/unistack-org/micro-client-http/v3"
 	api "github.com/unistack-org/micro/v3/api"
 	client "github.com/unistack-org/micro/v3/client"
 	server "github.com/unistack-org/micro/v3/server"
+	http "net/http"
 )
 
 type postClient struct {
@@ -20,6 +21,15 @@ func NewPostClient(name string, c client.Client) PostClient {
 }
 
 func (c *postClient) FindByID(ctx context.Context, req *FindByIDRequest, opts ...client.CallOption) (*FindByIDResponse, error) {
+	errmap := make(map[string]interface{}, 1)
+	errmap["200"] = &FindByIDResponse{}
+	opts = append(opts,
+		v3.ErrorMap(errmap),
+	)
+	opts = append(opts,
+		v3.Method(http.MethodGet),
+		v3.Path("/api/v1/posts/{post_id}"),
+	)
 	rsp := &FindByIDResponse{}
 	err := c.c.Call(ctx, c.c.NewRequest(c.name, "Post.FindByID", req), rsp, opts...)
 	if err != nil {
@@ -29,6 +39,10 @@ func (c *postClient) FindByID(ctx context.Context, req *FindByIDRequest, opts ..
 }
 
 func (c *postClient) GetPostFileByID(ctx context.Context, req *GetPostFileRequest, opts ...client.CallOption) (Post_GetPostFileByIDClient, error) {
+	opts = append(opts,
+		v3.Method(http.MethodGet),
+		v3.Path("/api/v1/posts/{post_id}/file"),
+	)
 	stream, err := c.c.Stream(ctx, c.c.NewRequest(c.name, "Post.GetPostFileByID", &GetPostFileRequest{}), opts...)
 	if err != nil {
 		return nil, err
@@ -116,8 +130,9 @@ func RegisterPostServer(s server.Server, sh PostServer, opts ...server.HandlerOp
 		post
 	}
 	h := &postServer{sh}
+	var nopts []server.HandlerOption
 	for _, endpoint := range NewPostEndpoints() {
-		opts = append(opts, api.WithEndpoint(endpoint))
+		nopts = append(nopts, api.WithEndpoint(endpoint))
 	}
-	return s.Handle(s.NewHandler(&Post{h}, opts...))
+	return s.Handle(s.NewHandler(&Post{h}, append(nopts, opts...)...))
 }
