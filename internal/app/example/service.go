@@ -44,13 +44,13 @@ func StartExampleService(ctx context.Context, errCh chan<- error) {
 		config.NewConfig(
 			config.Struct(cfg),
 		),
-		fileconfig.NewConfig(
+		fileconfig.NewConfig( // load from file in root directory of project
 			config.AllowFail(true),
 			config.Struct(cfg),
 			config.Codec(jsoncodec.NewCodec()),
 			fileconfig.Path("./config.json"),
 		),
-		envconfig.NewConfig(
+		envconfig.NewConfig( // load from env
 			config.AllowFail(true),
 			config.Struct(cfg),
 		),
