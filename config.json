@@ -1,0 +1,9 @@
+{
+    "server":{
+        "addr":":9090",
+        "name":"example"
+    },
+    "metric":{
+        "addr":":8080"
+    }
+}

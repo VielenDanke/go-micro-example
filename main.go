@@ -8,7 +8,7 @@ import (
 	"syscall"
 
 	"github.com/unistack-org/micro/v3/logger"
-	apiserver "github.com/vielendanke/go-micro-example/internal/example/server"
+	apiserver "github.com/vielendanke/go-micro-example/internal/app/example"
 )
 
 func main() {
