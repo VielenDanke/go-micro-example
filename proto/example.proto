@@ -87,6 +87,7 @@ service User {
             }
         };
     };
+    // micro.codec.Frame using for response file data
     rpc DownloadUserFile(DownloadRequest) returns (micro.codec.Frame) {
         option (micro.api.http) = {
             get: "/api/v1/users/{user_id}/file";
@@ -131,10 +132,12 @@ service User {
 message FindAllRequest {}
 
 message FindAllResponse {
+    // flatten use for unwrap users, result will be array of users instead of object with users array inside
     repeated UserModel users = 1 [(micro.tag.tags) = "codec:\"flatten\""];
 }
 
 message UserModel {
+    // custom XML tag, all codecs should be passed in the server (see: service.go)
     string id = 1 [(micro.tag.tags) = "xml:\"id\"" ];
     string username = 2 [(micro.tag.tags) = "xml:\"username\"" ];
 }
