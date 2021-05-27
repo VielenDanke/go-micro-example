@@ -6,6 +6,7 @@ import (
 
 	hcli "github.com/unistack-org/micro-client-http/v3"
 	jsoncodec "github.com/unistack-org/micro-codec-json/v3"
+	xmlcodec "github.com/unistack-org/micro-codec-xml/v3"
 	consulconfig "github.com/unistack-org/micro-config-consul/v3"
 	envconfig "github.com/unistack-org/micro-config-env/v3"
 	fileconfig "github.com/unistack-org/micro-config-file/v3"
@@ -96,6 +97,7 @@ func StartExampleService(ctx context.Context, errCh chan<- error) {
 			server.Version(cfg.Server.Version),
 			server.WrapHandler(middleware.CORSMiddleware),
 			server.Codec("application/json", jsoncodec.NewCodec()),
+			server.Codec("application/xml", xmlcodec.NewCodec()),
 		)),
 		micro.Client(hcli.NewClient(
 			client.ContentType("application/json"),

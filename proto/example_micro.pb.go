@@ -6,13 +6,26 @@ import (
 	context "context"
 	api "github.com/unistack-org/micro/v3/api"
 	client "github.com/unistack-org/micro/v3/client"
+	codec "github.com/unistack-org/micro/v3/codec"
 )
 
 func NewUserEndpoints() []*api.Endpoint {
 	return []*api.Endpoint{
 		&api.Endpoint{
+			Name:    "User.FindAll",
+			Path:    []string{"/api/v1/users"},
+			Method:  []string{"GET"},
+			Handler: "rpc",
+		},
+		&api.Endpoint{
 			Name:    "User.FindByID",
 			Path:    []string{"/api/v1/users/{user_id}"},
+			Method:  []string{"GET"},
+			Handler: "rpc",
+		},
+		&api.Endpoint{
+			Name:    "User.DownloadUserFile",
+			Path:    []string{"/api/v1/users/{user_id}/file"},
 			Method:  []string{"GET"},
 			Handler: "rpc",
 		},
@@ -20,9 +33,13 @@ func NewUserEndpoints() []*api.Endpoint {
 }
 
 type UserClient interface {
+	FindAll(ctx context.Context, req *FindAllRequest, opts ...client.CallOption) (*FindAllResponse, error)
 	FindByID(ctx context.Context, req *FindByIDRequest, opts ...client.CallOption) (*FindByIDResponse, error)
+	DownloadUserFile(ctx context.Context, req *DownloadRequest, opts ...client.CallOption) (*codec.Frame, error)
 }
 
 type UserServer interface {
+	FindAll(ctx context.Context, req *FindAllRequest, rsp *FindAllResponse) error
 	FindByID(ctx context.Context, req *FindByIDRequest, rsp *FindByIDResponse) error
+	DownloadUserFile(ctx context.Context, req *DownloadRequest, rsp *codec.Frame) error
 }

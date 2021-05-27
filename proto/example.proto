@@ -6,8 +6,43 @@ option go_package = "/proto;pb";
 
 import "api/annotations.proto";
 import "openapiv2/annotations.proto";
+import "codec/frame.proto";
+import "tag/tag.proto";
 
 service User {
+    rpc FindAll(FindAllRequest) returns (FindAllResponse) {
+        option (micro.api.http) = {
+            get: "/api/v1/users";
+        };
+        option (micro.openapiv2.openapiv2_operation) = {
+            operation_id: "FindAll"
+            consumes: "application/json"
+            produces: "application/json"
+            description: "Find all users"
+            responses: {
+                key: "200"
+                value: {
+                    description: "All users"
+                    schema: {
+                        json_schema: {
+                            ref: ".example.FindAllResponse"
+                        }
+                    }
+                }
+            }
+            responses: {
+                key: "500"
+                value: {
+                    description: "Internal error"
+                    schema: {
+                        json_schema: {
+                            ref: ".example.Error"
+                        }
+                    }
+                }
+            }
+        };
+    };
     rpc FindByID(FindByIDRequest) returns (FindByIDResponse) {
         option (micro.api.http) = {
             get: "/api/v1/users/{user_id}";
@@ -52,12 +87,66 @@ service User {
             }
         };
     };
+    rpc DownloadUserFile(DownloadRequest) returns (micro.codec.Frame) {
+        option (micro.api.http) = {
+            get: "/api/v1/users/{user_id}/file";
+        };
+        option (micro.openapiv2.openapiv2_operation) = {
+            operation_id: "DownloadUserFile"
+            consumes: "application/json"
+            produces: "application/json"
+            description: "Download user file"
+            responses: {
+                key: "200"
+                value: {
+                    description: "File found"
+                }
+            }
+            responses: {
+                key: "404"
+                value: {
+                    description: "User not found"
+                    schema: {
+                        json_schema: {
+                            ref: ".example.Error"
+                        }
+                    }
+                }
+            }
+            responses: {
+                key: "500"
+                value: {
+                    description: "Internal error"
+                    schema: {
+                        json_schema: {
+                            ref: ".example.Error"
+                        }
+                    }
+                }
+            }
+        };
+    }
 };
+
+message FindAllRequest {}
+
+message FindAllResponse {
+    repeated UserModel users = 1 [(micro.tag.tags) = "codec:\"flatten\""];
+}
+
+message UserModel {
+    string id = 1 [(micro.tag.tags) = "xml:\"id\"" ];
+    string username = 2 [(micro.tag.tags) = "xml:\"username\"" ];
+}
+
+message DownloadRequest {
+    string user_id = 1;
+}
 
 message FindByIDRequest {
     string user_id = 1;
 }
 
 message FindByIDResponse {
-    string username = 1;
+    UserModel user = 1 [(micro.tag.tags) = "codec:\"flatten\""];
 }

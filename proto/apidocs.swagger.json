@@ -16,6 +16,32 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/users": {
+      "get": {
+        "description": "Find all users",
+        "operationId": "FindAll",
+        "responses": {
+          "200": {
+            "description": "All users",
+            "schema": {
+              "$ref": "#/definitions/exampleFindAllResponse"
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "schema": {
+              "$ref": "#/definitions/exampleError"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
     "/api/v1/users/{userId}": {
       "get": {
         "description": "Find user by ID",
@@ -55,9 +81,58 @@
           "application/json"
         ]
       }
+    },
+    "/api/v1/users/{userId}/file": {
+      "get": {
+        "description": "Download user file",
+        "operationId": "DownloadUserFile",
+        "responses": {
+          "200": {
+            "description": "File found",
+            "schema": {
+              "$ref": "#/definitions/codecFrame"
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/exampleError"
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "schema": {
+              "$ref": "#/definitions/exampleError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
     }
   },
   "definitions": {
+    "codecFrame": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
     "exampleError": {
       "type": "object",
       "properties": {
@@ -66,9 +141,31 @@
         }
       }
     },
+    "exampleFindAllResponse": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/exampleUserModel"
+          }
+        }
+      }
+    },
     "exampleFindByIDResponse": {
       "type": "object",
       "properties": {
+        "user": {
+          "$ref": "#/definitions/exampleUserModel"
+        }
+      }
+    },
+    "exampleUserModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
         "username": {
           "type": "string"
         }

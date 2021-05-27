@@ -32,8 +32,8 @@ github.com/golang/protobuf v1.4.0-rc.2/go.mod h1:LlEzMj4AhA7rCAGe4KMBDvJI+AwstrU
 github.com/golang/protobuf v1.4.0-rc.4.0.20200313231945-b860323f09d0/go.mod h1:WU3c8KckQ9AFe+yFwt9sWVRKCVIyN9cPHBJSNnbL67w=
 github.com/golang/protobuf v1.4.0/go.mod h1:jodUvKwWbYaEsadDk5Fwe5c77LiNKVO9IDvqG2KuDX0=
 github.com/golang/protobuf v1.4.1/go.mod h1:U8fpvMrcmy5pZrNK1lt4xCsGvpyWQ/VVv6QDs8UjoX8=
-github.com/golang/protobuf v1.4.3 h1:JjCZWpVbqXDqFVmTfYWEVTMIYrL/NPdPSCHPJ0T/raM=
 github.com/golang/protobuf v1.4.3/go.mod h1:oDoupMAO8OvCJWAcko0GGGIgR6R6ocIYbsSw735rRwI=
+github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=
 github.com/golang/snappy v0.0.1 h1:Qgr9rKW7uDUkrbSmQeiDsGa8SjGyCOGtuasMWwvp2P4=
 github.com/golang/snappy v0.0.1/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
 github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ5JPQ=
@@ -44,8 +44,8 @@ github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMyw
 github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.5.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
-github.com/google/go-cmp v0.5.4 h1:L8R9j+yAqZuZjsqh/z+F1NCffTKKLShY6zXTItVIZ8M=
-github.com/google/go-cmp v0.5.4/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
+github.com/google/go-cmp v0.5.5 h1:Khx7svrCpmxxtHBq5j2mp/xVjsi8hQMfNLvJFAlrGgU=
+github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/uuid v1.2.0 h1:qJYtXnJRWmpe7m/3XlyhrsLrEURqHRM2kxzoxXqyUDs=
 github.com/google/uuid v1.2.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/hashicorp/consul/api v1.8.1 h1:BOEQaMWoGMhmQ29fC26bi0qb7/rId9JzZP2V0Xmx7m8=
@@ -166,6 +166,8 @@ github.com/unistack-org/micro-client-http/v3 v3.3.11 h1:/wc2DeGmxv5QAE3m/IXrhM82
 github.com/unistack-org/micro-client-http/v3 v3.3.11/go.mod h1:x6iiPF4Kdd6BRKCyMcPB9qu5BrNzAIiGdEBnddJ3yVY=
 github.com/unistack-org/micro-codec-json/v3 v3.2.5 h1:WOilhbL0YSu58iIQIIxpawRYZyx6CR16tCpbX4ai3Vc=
 github.com/unistack-org/micro-codec-json/v3 v3.2.5/go.mod h1:LSzfrD9GYWCl6KOyihywx1wlbOgStrpyy3NVHNZAvHA=
+github.com/unistack-org/micro-codec-xml/v3 v3.2.2 h1:xJMMcNjfyFNHA4bzRBrB9EvVf4GJ5Hl0egi5V4SJ3KE=
+github.com/unistack-org/micro-codec-xml/v3 v3.2.2/go.mod h1:75yGkasLbY2QsVnjzXiovlXPgsm+ddA43IKspWS5vNo=
 github.com/unistack-org/micro-config-consul/v3 v3.2.6 h1:rWTkV36d2X+V5Y+aegnKOczDbu/MfdNDvZLnaaoK5qk=
 github.com/unistack-org/micro-config-consul/v3 v3.2.6/go.mod h1:WiYkukXEMHIN4UNMdEOPMzBdPwYyNwsxBSwacQ7U//o=
 github.com/unistack-org/micro-config-env/v3 v3.3.0 h1:7YsYImoF4zOXZEwrqOdRjyJhNaRiJU+JCjtoziJMWnE=
@@ -174,8 +176,8 @@ github.com/unistack-org/micro-config-file/v3 v3.3.0 h1:NPxy21fSNH3QqaSp4Wy9bkw04
 github.com/unistack-org/micro-config-file/v3 v3.3.0/go.mod h1:7stpGqRSv/EHR9ioPk34tHTIphKQz7suJWv3S800exs=
 github.com/unistack-org/micro-config-vault/v3 v3.2.9 h1:QXdqZSWmImAI7hC0KVRsMruTYm8++RWAdggEM+D8crY=
 github.com/unistack-org/micro-config-vault/v3 v3.2.9/go.mod h1:H/c9YFqY7QmkFsr1T+vjTkcZJKEJXYId+G80Ygym+tE=
-github.com/unistack-org/micro-proto v0.0.1 h1:1d9O8d3/ZITQPwIQCvZ+2OCDjVP0iaX+gv5klbwkE/I=
-github.com/unistack-org/micro-proto v0.0.1/go.mod h1:GYO53DWmeldRIo90cAdQx8bLr/WJMxW62W4ja74p1Ac=
+github.com/unistack-org/micro-proto v0.0.2 h1:mL1ZPRGPCWJOiMBiJrkk8Y513rPrJmhJWxyLceckAXU=
+github.com/unistack-org/micro-proto v0.0.2/go.mod h1:GYO53DWmeldRIo90cAdQx8bLr/WJMxW62W4ja74p1Ac=
 github.com/unistack-org/micro-server-http/v3 v3.3.19 h1:njrxK1X3XnfliOqBTb5pTChhfhxFnfU71tQNcU56ZEQ=
 github.com/unistack-org/micro-server-http/v3 v3.3.19/go.mod h1:rcuRcHLpdynsJFTvEcSV6sU+TdT8f7mczxmLNcIUxEU=
 github.com/unistack-org/micro/v3 v3.2.24/go.mod h1:iJwCWq2PECMxigfqe6TPC5GLWvj6P94Kk+PTVZGL3w8=
@@ -269,8 +271,10 @@ google.golang.org/protobuf v1.21.0/go.mod h1:47Nbq4nVaFHyn7ilMalzfO3qCViNmqZ2kzi
 google.golang.org/protobuf v1.22.0/go.mod h1:EGpADcykh3NcUnDUJcl1+ZksZNG86OlYog2l/sGQquU=
 google.golang.org/protobuf v1.23.0/go.mod h1:EGpADcykh3NcUnDUJcl1+ZksZNG86OlYog2l/sGQquU=
 google.golang.org/protobuf v1.23.1-0.20200526195155-81db48ad09cc/go.mod h1:EGpADcykh3NcUnDUJcl1+ZksZNG86OlYog2l/sGQquU=
-google.golang.org/protobuf v1.25.0 h1:Ejskq+SyPohKW+1uil0JJMtmHCgJPJ/qWTxr8qp+R4c=
 google.golang.org/protobuf v1.25.0/go.mod h1:9JNX74DMeImyA3h4bdi1ymwjUzf21/xIlbajtzgsN7c=
+google.golang.org/protobuf v1.26.0-rc.1/go.mod h1:jlhhOSvTdKEhbULTjvd4ARK9grFBp09yW+WbY/TyQbw=
+google.golang.org/protobuf v1.26.0 h1:bxAC2xTBsZGibn2RTntX0oH50xLsqy1OxA9tTL3p/lk=
+google.golang.org/protobuf v1.26.0/go.mod h1:9q0QmTI4eRPtz6boOQmLYwt+qCgq0jsYwAQnmE0givc=
 gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d/go.mod h1:cuepJuh7vyXfUyUwEgHQXw849cJrilpS5NeIjOWESAw=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

@@ -31,3 +31,21 @@ func (u UserRepositoryImpl) FindByID(ctx context.Context, id string) (*model.Use
 	}
 	return usr, nil
 }
+
+func (u UserRepositoryImpl) FindAll(ctx context.Context) ([]*model.User, error) {
+	rows, err := u.db.QueryContext(ctx, "select u.id, u.username from users u")
+
+	if err != nil {
+		return nil, &pb.Error{Msg: err.Error()}
+	}
+	users := make([]*model.User, 0)
+
+	for rows.Next() {
+		m := &model.User{}
+		if scanErr := rows.Scan(&m.ID, &m.Username); scanErr != nil {
+			return nil, &pb.Error{Msg: scanErr.Error()}
+		}
+		users = append(users, m)
+	}
+	return users, nil
+}
