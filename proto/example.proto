@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package gomicroexample;
+package example;
 
 option go_package = "proto;pb";
 
