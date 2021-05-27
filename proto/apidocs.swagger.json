@@ -55,39 +55,6 @@
           "application/json"
         ]
       }
-    },
-    "/api/v1/posts/{postId}/file": {
-      "get": {
-        "operationId": "Post_GetPostFileByID",
-        "responses": {
-          "200": {
-            "description": "A successful response.(streaming responses)",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "$ref": "#/definitions/exampleGetPostFileResponse"
-                },
-                "error": {
-                  "$ref": "#/definitions/rpcStatus"
-                }
-              },
-              "title": "Stream result of exampleGetPostFileResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "postId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Post"
-        ]
-      }
     }
   },
   "definitions": {
@@ -107,15 +74,6 @@
         },
         "text": {
           "type": "string"
-        }
-      }
-    },
-    "exampleGetPostFileResponse": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "type": "string",
-          "format": "byte"
         }
       }
     }

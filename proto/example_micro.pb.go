@@ -16,38 +16,13 @@ func NewPostEndpoints() []*api.Endpoint {
 			Method:  []string{"GET"},
 			Handler: "rpc",
 		},
-		&api.Endpoint{
-			Name:    "Post.GetPostFileByID",
-			Path:    []string{"/api/v1/posts/{post_id}/file"},
-			Method:  []string{"GET"},
-			Stream:  true,
-			Handler: "rpc",
-		},
 	}
 }
 
 type PostClient interface {
 	FindByID(ctx context.Context, req *FindByIDRequest, opts ...client.CallOption) (*FindByIDResponse, error)
-	GetPostFileByID(ctx context.Context, req *GetPostFileRequest, opts ...client.CallOption) (Post_GetPostFileByIDClient, error)
-}
-
-type Post_GetPostFileByIDClient interface {
-	Context() context.Context
-	SendMsg(msg interface{}) error
-	RecvMsg(msg interface{}) error
-	Close() error
-	Recv() (*GetPostFileResponse, error)
 }
 
 type PostServer interface {
 	FindByID(ctx context.Context, req *FindByIDRequest, rsp *FindByIDResponse) error
-	GetPostFileByID(ctx context.Context, req *GetPostFileRequest, stream Post_GetPostFileByIDStream) error
-}
-
-type Post_GetPostFileByIDStream interface {
-	Context() context.Context
-	SendMsg(msg interface{}) error
-	RecvMsg(msg interface{}) error
-	Close() error
-	Send(msg *GetPostFileResponse) error
 }

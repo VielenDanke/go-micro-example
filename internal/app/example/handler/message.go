@@ -21,8 +21,3 @@ func (h *MessageHandler) FindByID(ctx context.Context, req *pb.FindByIDRequest, 
 	httpsrv.SetRspCode(ctx, 200)
 	return nil
 }
-
-func (h *MessageHandler) GetPostFileByID(ctx context.Context, req *pb.GetPostFileRequest, stream pb.Post_GetPostFileByIDStream) error {
-	data := []byte("hello")
-	return stream.Send(&pb.GetPostFileResponse{Data: data})
-}

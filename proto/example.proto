@@ -52,20 +52,7 @@ service Post {
             }
         };
     };
-    rpc GetPostFileByID(GetPostFileRequest) returns (stream GetPostFileResponse) {
-        option (micro.api.http) = {
-            get: "/api/v1/posts/{post_id}/file"
-        };
-    };
 };
-
-message GetPostFileRequest {
-    string post_id = 1;
-}
-
-message GetPostFileResponse {
-    bytes data = 1;
-}
 
 message FindByIDRequest {
     string post_id = 1;
