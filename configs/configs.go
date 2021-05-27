@@ -4,6 +4,8 @@ type Config struct {
 	Server *ServerConfig `json:"server"`
 	Metric *MetricConfig `json:"metric"`
 	DB     *DBConfig     `json:"db"`
+	Consul *ConsulConfig `json:"consul"`
+	Vault  *VaultConfig  `json:"vault"`
 }
 
 func NewConfig() *Config {
@@ -11,7 +13,21 @@ func NewConfig() *Config {
 		Server: &ServerConfig{},
 		Metric: &MetricConfig{},
 		DB:     &DBConfig{},
+		Consul: &ConsulConfig{},
+		Vault:  &VaultConfig{},
 	}
+}
+
+type ConsulConfig struct {
+	Addr  string `env:"CONSUL_ADDR" json:"addr" default:"127.0.0.1:8500"`
+	Token string `env:"CONSUL_TOKEN" json:"token"`
+	Path  string `env:"CONSUL_PATH" json:"-" default:"service-platform/apigw"`
+}
+
+type VaultConfig struct {
+	Addr  string `env:"VAULT_ADDR" json:"addr" default:"127.0.0.1:8200"`
+	Token string `env:"VAULT_TOKEN" json:"-"`
+	Path  string `env:"VAULT_PATH" json:"-" default:"service-platform/apigw"`
 }
 
 type DBConfig struct {

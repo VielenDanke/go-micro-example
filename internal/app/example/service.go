@@ -6,8 +6,10 @@ import (
 
 	hcli "github.com/unistack-org/micro-client-http/v3"
 	jsoncodec "github.com/unistack-org/micro-codec-json/v3"
+	consulconfig "github.com/unistack-org/micro-config-consul/v3"
 	envconfig "github.com/unistack-org/micro-config-env/v3"
 	fileconfig "github.com/unistack-org/micro-config-file/v3"
+	vaultconfig "github.com/unistack-org/micro-config-vault/v3"
 	httpsrv "github.com/unistack-org/micro-server-http/v3"
 	"github.com/unistack-org/micro/v3"
 	"github.com/unistack-org/micro/v3/client"
@@ -16,6 +18,7 @@ import (
 	"github.com/unistack-org/micro/v3/server"
 	"github.com/vielendanke/go-micro-example/configs"
 	"github.com/vielendanke/go-micro-example/internal/app/example/handler"
+	"github.com/vielendanke/go-micro-example/internal/app/example/middleware"
 	"github.com/vielendanke/go-micro-example/internal/app/example/repository"
 	"github.com/vielendanke/go-micro-example/internal/app/example/service"
 	pb "github.com/vielendanke/go-micro-example/proto"
@@ -50,6 +53,32 @@ func StartExampleService(ctx context.Context, errCh chan<- error) {
 			config.AllowFail(true),
 			config.Struct(cfg),
 		),
+		consulconfig.NewConfig( // load from consul
+			config.AllowFail(true),             // that may be not exists
+			config.Struct(cfg),                 // pass config struct
+			config.Codec(jsoncodec.NewCodec()), // consul config in json
+			config.BeforeLoad(func(ctx context.Context, c config.Config) error { // run func before load
+				// reconfigure consul config to use filled values
+				return c.Init( // reinit consul with new options
+					consulconfig.Address(cfg.Consul.Addr), // pass consul addr
+					consulconfig.Token(cfg.Consul.Token),  // pass consul token
+					consulconfig.Path(cfg.Consul.Path),    // pass consul path
+				)
+			}),
+		),
+		vaultconfig.NewConfig(
+			config.AllowFail(true),             // that may be not exists
+			config.Struct(cfg),                 // load from vault
+			config.Codec(jsoncodec.NewCodec()), // vault config in json
+			config.BeforeLoad(func(ctx context.Context, c config.Config) error {
+				return c.Init(
+					vaultconfig.Address(cfg.Vault.Addr),
+					vaultconfig.Token(cfg.Vault.Token),
+					vaultconfig.Path(cfg.Vault.Path),
+				)
+
+			}),
+		),
 	); loadErr != nil {
 		errCh <- loadErr
 		return
@@ -65,6 +94,7 @@ func StartExampleService(ctx context.Context, errCh chan<- error) {
 			server.Address(cfg.Server.Addr),
 			server.Name(cfg.Server.Name),
 			server.Version(cfg.Server.Version),
+			server.WrapHandler(middleware.CORSMiddleware),
 			server.Codec("application/json", jsoncodec.NewCodec()),
 		)),
 		micro.Client(hcli.NewClient(
