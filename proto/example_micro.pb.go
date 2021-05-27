@@ -8,21 +8,21 @@ import (
 	client "github.com/unistack-org/micro/v3/client"
 )
 
-func NewPostEndpoints() []*api.Endpoint {
+func NewUserEndpoints() []*api.Endpoint {
 	return []*api.Endpoint{
 		&api.Endpoint{
-			Name:    "Post.FindByID",
-			Path:    []string{"/api/v1/posts/{post_id}"},
+			Name:    "User.FindByID",
+			Path:    []string{"/api/v1/users/{user_id}"},
 			Method:  []string{"GET"},
 			Handler: "rpc",
 		},
 	}
 }
 
-type PostClient interface {
+type UserClient interface {
 	FindByID(ctx context.Context, req *FindByIDRequest, opts ...client.CallOption) (*FindByIDResponse, error)
 }
 
-type PostServer interface {
+type UserServer interface {
 	FindByID(ctx context.Context, req *FindByIDRequest, rsp *FindByIDResponse) error
 }

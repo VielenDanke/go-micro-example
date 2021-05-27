@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "example.proto",
+    "title": "error.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "Post"
+      "name": "User"
     }
   ],
   "consumes": [
@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/posts/{postId}": {
+    "/api/v1/users/{userId}": {
       "get": {
         "description": "Find user by ID",
         "operationId": "FindByID",
@@ -42,14 +42,14 @@
         },
         "parameters": [
           {
-            "name": "postId",
+            "name": "userId",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "tags": [
-          "Post"
+          "User"
         ],
         "produces": [
           "application/json"
@@ -69,10 +69,7 @@
     "exampleFindByIDResponse": {
       "type": "object",
       "properties": {
-        "postId": {
-          "type": "string"
-        },
-        "text": {
+        "username": {
           "type": "string"
         }
       }

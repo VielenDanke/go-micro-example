@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	_ "github.com/lib/pq"
 	"github.com/unistack-org/micro/v3/logger"
 	apiserver "github.com/vielendanke/go-micro-example/internal/app/example"
 )

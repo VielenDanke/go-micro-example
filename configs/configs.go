@@ -3,13 +3,20 @@ package configs
 type Config struct {
 	Server *ServerConfig `json:"server"`
 	Metric *MetricConfig `json:"metric"`
+	DB     *DBConfig     `json:"db"`
 }
 
 func NewConfig() *Config {
 	return &Config{
 		Server: &ServerConfig{},
 		Metric: &MetricConfig{},
+		DB:     &DBConfig{},
 	}
+}
+
+type DBConfig struct {
+	Name string `json:"name" env:"DB_NAME"`
+	URL  string `json:"url" env:"DB_URL"`
 }
 
 type MetricConfig struct {

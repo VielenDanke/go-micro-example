@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package example;
+
+option go_package = "/proto;pb";
+
+message Error {
+    string msg = 1;
+}
+
+message ErrorNotFound {
+    string msg = 1;
+}

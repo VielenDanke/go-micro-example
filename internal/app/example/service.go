@@ -2,6 +2,7 @@ package example
 
 import (
 	"context"
+	"database/sql"
 
 	hcli "github.com/unistack-org/micro-client-http/v3"
 	jsoncodec "github.com/unistack-org/micro-codec-json/v3"
@@ -15,8 +16,22 @@ import (
 	"github.com/unistack-org/micro/v3/server"
 	"github.com/vielendanke/go-micro-example/configs"
 	"github.com/vielendanke/go-micro-example/internal/app/example/handler"
+	"github.com/vielendanke/go-micro-example/internal/app/example/repository"
+	"github.com/vielendanke/go-micro-example/internal/app/example/service"
 	pb "github.com/vielendanke/go-micro-example/proto"
 )
+
+func initDB(name, url string) (*sql.DB, error) {
+	db, openErr := sql.Open(name, url)
+
+	if openErr != nil {
+		return nil, openErr
+	}
+	if pingErr := db.Ping(); pingErr != nil {
+		return nil, pingErr
+	}
+	return db, nil
+}
 
 func StartExampleService(ctx context.Context, errCh chan<- error) {
 	cfg := configs.NewConfig()
@@ -28,7 +43,8 @@ func StartExampleService(ctx context.Context, errCh chan<- error) {
 		fileconfig.NewConfig(
 			config.AllowFail(true),
 			config.Struct(cfg),
-			fileconfig.Path("./configs.json"),
+			config.Codec(jsoncodec.NewCodec()),
+			fileconfig.Path("./config.json"),
 		),
 		envconfig.NewConfig(
 			config.AllowFail(true),
@@ -44,7 +60,6 @@ func StartExampleService(ctx context.Context, errCh chan<- error) {
 		errCh <- initErr
 		return
 	}
-
 	if initErr := svc.Init(
 		micro.Server(httpsrv.NewServer(
 			server.Address(cfg.Server.Addr),
@@ -60,15 +75,23 @@ func StartExampleService(ctx context.Context, errCh chan<- error) {
 		errCh <- initErr
 		return
 	}
+	db, dbErr := initDB(cfg.DB.Name, cfg.DB.URL)
 
-	h := handler.NewMessageHandler()
+	if dbErr != nil {
+		errCh <- dbErr
+		return
+	}
+	r := repository.NewUserRepository(db)
 
-	if err := pb.RegisterPostServer(svc.Server(), h); err != nil {
+	s := service.NewUserService(r)
+
+	h := handler.NewUserHandler(s)
+
+	if err := pb.RegisterUserServer(svc.Server(), h); err != nil {
 		logger.Errorf(ctx, "Error registering server %v", err)
 		errCh <- err
 		return
 	}
-
 	if err := svc.Run(); err != nil {
 		logger.Errorf(ctx, "Error runnig service %v", err)
 		errCh <- err

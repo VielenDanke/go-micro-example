@@ -11,54 +11,54 @@ import (
 	http "net/http"
 )
 
-type postClient struct {
+type userClient struct {
 	c    client.Client
 	name string
 }
 
-func NewPostClient(name string, c client.Client) PostClient {
-	return &postClient{c: c, name: name}
+func NewUserClient(name string, c client.Client) UserClient {
+	return &userClient{c: c, name: name}
 }
 
-func (c *postClient) FindByID(ctx context.Context, req *FindByIDRequest, opts ...client.CallOption) (*FindByIDResponse, error) {
+func (c *userClient) FindByID(ctx context.Context, req *FindByIDRequest, opts ...client.CallOption) (*FindByIDResponse, error) {
 	errmap := make(map[string]interface{}, 3)
-	errmap["200"] = &FindByIDResponse{}
 	errmap["404"] = &Error{}
 	errmap["500"] = &Error{}
+	errmap["200"] = &FindByIDResponse{}
 	opts = append(opts,
 		v3.ErrorMap(errmap),
 	)
 	opts = append(opts,
 		v3.Method(http.MethodGet),
-		v3.Path("/api/v1/posts/{post_id}"),
+		v3.Path("/api/v1/users/{user_id}"),
 	)
 	rsp := &FindByIDResponse{}
-	err := c.c.Call(ctx, c.c.NewRequest(c.name, "Post.FindByID", req), rsp, opts...)
+	err := c.c.Call(ctx, c.c.NewRequest(c.name, "User.FindByID", req), rsp, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return rsp, nil
 }
 
-type postServer struct {
-	PostServer
+type userServer struct {
+	UserServer
 }
 
-func (h *postServer) FindByID(ctx context.Context, req *FindByIDRequest, rsp *FindByIDResponse) error {
-	return h.PostServer.FindByID(ctx, req, rsp)
+func (h *userServer) FindByID(ctx context.Context, req *FindByIDRequest, rsp *FindByIDResponse) error {
+	return h.UserServer.FindByID(ctx, req, rsp)
 }
 
-func RegisterPostServer(s server.Server, sh PostServer, opts ...server.HandlerOption) error {
-	type post interface {
+func RegisterUserServer(s server.Server, sh UserServer, opts ...server.HandlerOption) error {
+	type user interface {
 		FindByID(ctx context.Context, req *FindByIDRequest, rsp *FindByIDResponse) error
 	}
-	type Post struct {
-		post
+	type User struct {
+		user
 	}
-	h := &postServer{sh}
+	h := &userServer{sh}
 	var nopts []server.HandlerOption
-	for _, endpoint := range NewPostEndpoints() {
+	for _, endpoint := range NewUserEndpoints() {
 		nopts = append(nopts, api.WithEndpoint(endpoint))
 	}
-	return s.Handle(s.NewHandler(&Post{h}, append(nopts, opts...)...))
+	return s.Handle(s.NewHandler(&User{h}, append(nopts, opts...)...))
 }
