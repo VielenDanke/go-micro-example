@@ -21,7 +21,9 @@ func NewPostClient(name string, c client.Client) PostClient {
 }
 
 func (c *postClient) FindByID(ctx context.Context, req *FindByIDRequest, opts ...client.CallOption) (*FindByIDResponse, error) {
-	errmap := make(map[string]interface{}, 1)
+	errmap := make(map[string]interface{}, 3)
+	errmap["404"] = &Error{}
+	errmap["500"] = &Error{}
 	errmap["200"] = &FindByIDResponse{}
 	opts = append(opts,
 		v3.ErrorMap(errmap),

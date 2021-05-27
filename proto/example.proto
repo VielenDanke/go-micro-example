@@ -28,6 +28,28 @@ service Post {
                     }
                 }
             }
+            responses: {
+                key: "404"
+                value: {
+                    description: "User not found"
+                    schema: {
+                        json_schema: {
+                            ref: ".example.Error"
+                        }
+                    }
+                }
+            }
+            responses: {
+                key: "500"
+                value: {
+                    description: "Internal error"
+                    schema: {
+                        json_schema: {
+                            ref: ".example.Error"
+                        }
+                    }
+                }
+            }
         };
     };
     rpc GetPostFileByID(GetPostFileRequest) returns (stream GetPostFileResponse) {
@@ -52,4 +74,8 @@ message FindByIDRequest {
 message FindByIDResponse {
     string post_id = 1;
     string text = 2;
+}
+
+message Error {
+    string msg = 1;
 }

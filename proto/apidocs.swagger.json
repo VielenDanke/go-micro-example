@@ -26,6 +26,18 @@
             "schema": {
               "$ref": "#/definitions/exampleFindByIDResponse"
             }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/exampleError"
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "schema": {
+              "$ref": "#/definitions/exampleError"
+            }
           }
         },
         "parameters": [
@@ -79,6 +91,14 @@
     }
   },
   "definitions": {
+    "exampleError": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "type": "string"
+        }
+      }
+    },
     "exampleFindByIDResponse": {
       "type": "object",
       "properties": {
