@@ -9,5 +9,8 @@
     "db":{
         "name":"postgres",
         "url":"user=user password=userpassword sslmode=disable host=localhost port=5432 dbname=shop"
+    },
+    "proxy":{
+        "addr":"proxy_addr"
     }
 }

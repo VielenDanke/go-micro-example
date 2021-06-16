@@ -4,6 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"embed"
+	"net"
+	"net/http"
+	"net/url"
+	"time"
 
 	hcli "github.com/unistack-org/micro-client-http/v3"
 	jsoncodec "github.com/unistack-org/micro-codec-json/v3"
@@ -87,6 +91,27 @@ func StartExampleService(ctx context.Context, _ embed.FS, errCh chan<- error) {
 	}
 	svc := micro.NewService()
 
+	url, parseUrlErr := url.Parse(cfg.Proxy.Addr)
+
+	if parseUrlErr != nil {
+		errCh <- parseUrlErr
+		return
+	}
+
+	tr := &http.Transport{
+		Proxy: http.ProxyURL(url),
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}
+	cl := &http.Client{Transport: tr}
+
 	if initErr := svc.Init(); initErr != nil {
 		errCh <- initErr
 		return
@@ -103,6 +128,7 @@ func StartExampleService(ctx context.Context, _ embed.FS, errCh chan<- error) {
 		micro.Client(hcli.NewClient(
 			client.ContentType("application/json"),
 			client.Codec("application/json", jsoncodec.NewCodec()),
+			hcli.HTTPClient(cl),
 		)),
 	); initErr != nil {
 		errCh <- initErr

@@ -6,6 +6,7 @@ type Config struct {
 	DB     *DBConfig     `json:"db"`
 	Consul *ConsulConfig `json:"consul"`
 	Vault  *VaultConfig  `json:"vault"`
+	Proxy  *ProxyConfig  `json:"proxy"`
 }
 
 func NewConfig() *Config {
@@ -15,7 +16,12 @@ func NewConfig() *Config {
 		DB:     &DBConfig{},
 		Consul: &ConsulConfig{},
 		Vault:  &VaultConfig{},
+		Proxy:  &ProxyConfig{},
 	}
+}
+
+type ProxyConfig struct {
+	Addr string `json:"addr"`
 }
 
 type ConsulConfig struct {
